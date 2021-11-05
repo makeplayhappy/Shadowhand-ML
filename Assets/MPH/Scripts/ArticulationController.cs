@@ -17,6 +17,30 @@ public class ArticulationController : MonoBehaviour{
     void Awake() {
         articulations = GetComponentsInChildren<ArticulationBody>(); 
         frameUpdate = new int[articulations.Length];
+
+        for (int i = 0; i < articulations.Length; i++){
+            Debug.Log(i + " joint type: " + articulations[i].jointType );
+    /*        
+             + 
+            " linearLockX: " + articulations[i].linearLockX +
+            " linearLockY: " + articulations[i].linearLockY + 
+            " linearLockZ: " + articulations[i].linearLockZ + 
+            " swingYLock: " + articulations[i].swingYLock + 
+            " swingZLock: " + articulations[i].swingZLock + 
+            " twistLock: " + articulations[i].twistLock);
+            
+            */
+/*
+swingYLock	The magnitude of the conical swing angle relative to Y axis.
+swingZLock	The magnitude of the conical swing angle relative to Z axis.
+twistLock
+
+linearLockX	The type of lock along X axis of movement.
+linearLockY	The type of lock along Y axis of movement.
+linearLockZ
+*/
+
+        }
     }
 
     void Start(){
@@ -40,12 +64,12 @@ public class ArticulationController : MonoBehaviour{
                         // clone the drive component, update the target and then set it back, this just how you have to do it for now!
                         // https://forum.unity.com/threads/featherstones-solver-for-articulations.792294/page-6
                         ArticulationDrive drive = articulations[articulation_index].xDrive;
-                        ArticulationDofLock xlock = articulations[articulation_index].linearLockX;
+                        ArticulationDofLock xlock = articulations[articulation_index].twistLock; //stored in twist not linearLockX
                         switch(xlock){
                             case ArticulationDofLock.FreeMotion:
                                 drive.target = Random.Range(-180f, 180f);
                             break;
-                            default:
+                            case ArticulationDofLock.LimitedMotion:
                                 drive.target = Random.Range(drive.lowerLimit, drive.upperLimit);
                             break;
                         }
